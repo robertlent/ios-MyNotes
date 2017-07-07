@@ -24,14 +24,16 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "editItem", sender: self)
-    }
+
+    //Editing tasks is not working, so disabled segue until Edit is implemented
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        performSegue(withIdentifier: "editItem", sender: self)
+//    }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
             list.remove(at: indexPath.row)
+            defaults.set(list, forKey: "ToDoListItems")
             taskList.reloadData()
         }
     }
