@@ -13,6 +13,8 @@ var list = defaults.stringArray(forKey: "ToDoListItems") ?? [String]()
 
 class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var taskList: UITableView!
+    @IBOutlet weak var arrangeListButton: UIBarButtonItem!
+    @IBOutlet weak var newTaskButton: UIBarButtonItem!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return list.count
@@ -23,6 +25,16 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         cell.textLabel?.text = list[indexPath.row]
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let item = list[sourceIndexPath.row]
+        list.remove(at: sourceIndexPath.row)
+        list.insert(item, at: destinationIndexPath.row)
     }
 
     //Editing tasks is not working, so disabled segue until Edit is implemented
@@ -35,6 +47,20 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             list.remove(at: indexPath.row)
             defaults.set(list, forKey: "ToDoListItems")
             taskList.reloadData()
+        }
+    }
+    
+    @IBAction func pressedArrange(_ sender: Any) {
+        taskList.isEditing = !taskList.isEditing
+        
+        switch taskList.isEditing {
+        case true:
+            arrangeListButton.title = "Done"
+            newTaskButton.isEnabled = false
+        default:
+            arrangeListButton.title = "Arrange"
+            newTaskButton.isEnabled = true
+            defaults.set(list, forKey: "ToDoListItems")
         }
     }
     
