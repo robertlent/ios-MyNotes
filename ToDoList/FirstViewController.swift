@@ -7,6 +7,7 @@
 */
 
 import UIKit
+import Social
 
 let defaults = UserDefaults.standard
 var list = defaults.stringArray(forKey: "ToDoListItems") ?? [String]()
@@ -15,6 +16,37 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var taskList: UITableView!
     @IBOutlet weak var arrangeListButton: UIBarButtonItem!
     @IBOutlet weak var newTaskButton: UIBarButtonItem!
+    var taskText = ""
+    
+    func pressedShare() {
+        let shareAlert = UIAlertController(title: "Share", message: "Share your task!", preferredStyle: .actionSheet)
+        
+        let shareFacebook = UIAlertAction(title: "Share on Facebook", style: .default, handler: {(shareAlert: UIAlertAction!) in
+            let post = SLComposeViewController(forServiceType: SLServiceTypeFacebook)!
+                
+            post.setInitialText("\(self.taskText) - Shared from Lent Coding's To-Do-List iOS app. https://github.com/robertmlent/ios-ToDoList")
+            post.add(UIImage(named: "iPad-ProApp-83.5@2x.png"))
+                
+            self.present(post, animated: true, completion: nil)
+        })
+        
+        let shareTwitter = UIAlertAction(title: "Share on Twitter", style: .default, handler: {(shareAlert: UIAlertAction!) in
+            let post = SLComposeViewController(forServiceType: SLServiceTypeTwitter)!
+                
+            post.setInitialText("\(self.taskText) - Shared from Lent Coding's To-Do-List iOS app. https://github.com/robertmlent/ios-ToDoList")
+            post.add(UIImage(named: "iPad-ProApp-83.5@2x.png"))
+                
+            self.present(post, animated: true, completion: nil)
+        })
+        
+        let cancelShare = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        shareAlert.addAction(shareFacebook)
+        shareAlert.addAction(shareTwitter)
+        shareAlert.addAction(cancelShare)
+        
+        self.present(shareAlert, animated: true, completion: nil)
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return list.count
@@ -41,6 +73,16 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         performSegue(withIdentifier: "editItem", sender: self)
     }
 
+    func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
+            let touchPoint = longPressGestureRecognizer.location(in: self.taskList)
+            if let indexPath = taskList.indexPathForRow(at: touchPoint) {
+                taskText = String(list[indexPath.row])
+                pressedShare()
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
             list.remove(at: indexPath.row)
@@ -61,6 +103,15 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             newTaskButton.isEnabled = true
             defaults.set(list, forKey: "ToDoListItems")
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(FirstViewController.longPress(_:)))
+        longPressGesture.minimumPressDuration = 1.0
+        longPressGesture.delegate = self as? UIGestureRecognizerDelegate
+        self.view.addGestureRecognizer(longPressGesture)
     }
     
     override func viewDidAppear(_ animated: Bool) {

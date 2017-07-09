@@ -14,6 +14,7 @@
 		E106B6591F0E47D8001F3749 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E106B6581F0E47D8001F3749 /* Assets.xcassets */; };
 		E106B65C1F0E47D8001F3749 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E106B65A1F0E47D8001F3749 /* LaunchScreen.storyboard */; };
 		E106B6641F0E57DF001F3749 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E106B6631F0E57DF001F3749 /* ThirdViewController.swift */; };
+		E1C6D64D1F127C0100EF33E0 /* iPad-ProApp-83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1C6D64C1F127C0000EF33E0 /* iPad-ProApp-83.5@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		E106B65B1F0E47D8001F3749 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E106B65D1F0E47D8001F3749 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E106B6631F0E57DF001F3749 /* ThirdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
+		E1C6D64C1F127C0000EF33E0 /* iPad-ProApp-83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-ProApp-83.5@2x.png"; path = "Assets.xcassets/AppIcon.appiconset/iPad-ProApp-83.5@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 		E106B64E1F0E47D8001F3749 /* ToDoList */ = {
 			isa = PBXGroup;
 			children = (
+				E1C6D64C1F127C0000EF33E0 /* iPad-ProApp-83.5@2x.png */,
 				E106B64F1F0E47D8001F3749 /* AppDelegate.swift */,
 				E106B6511F0E47D8001F3749 /* FirstViewController.swift */,
 				E106B6531F0E47D8001F3749 /* SecondViewController.swift */,
@@ -130,6 +133,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1C6D64D1F127C0100EF33E0 /* iPad-ProApp-83.5@2x.png in Resources */,
 				E106B65C1F0E47D8001F3749 /* LaunchScreen.storyboard in Resources */,
 				E106B6591F0E47D8001F3749 /* Assets.xcassets in Resources */,
 				E106B6571F0E47D8001F3749 /* Main.storyboard in Resources */,
