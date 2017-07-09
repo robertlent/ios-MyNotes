@@ -1,10 +1,10 @@
-//
+/*
 //  FirstViewController.swift
 //  ToDoList
 //
 //  Created by Robert on 7/6/17.
 //  Copyright © 2017 Lent Coding. All rights reserved.
-//
+*/
 
 import UIKit
 
@@ -37,10 +37,9 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         list.insert(item, at: destinationIndexPath.row)
     }
 
-    //Editing tasks is not working, so disabled segue until Edit is implemented
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        performSegue(withIdentifier: "editItem", sender: self)
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "editItem", sender: self)
+    }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
@@ -67,17 +66,19 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         taskList.reloadData()
+        defaults.set(list, forKey: "ToDoListItems")
     }
     
-    //Editing tasks is not working
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "editItem" {
-//            if let destination = segue.destination as? ThirdViewController {
-//                let selectedItem = taskList.indexPathForSelectedRow?.row
-//                destination.editTask.text = list[selectedItem!]
-//            }
-//        }
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "editItem" {
+            if let destination = segue.destination as? ThirdViewController {
+                let selectedItem = taskList.indexPathForSelectedRow!.row
+                let arrayIndex = selectedItem
+                destination.selectedItem = list[selectedItem]
+                destination.arrayIndex = arrayIndex
+            }
+        }
+    }
     
     @IBAction func unwindToFirstViewController(segue: UIStoryboardSegue){
     }
