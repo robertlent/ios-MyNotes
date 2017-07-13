@@ -1,10 +1,10 @@
-//
-//  AppDelegate.swift
-//  ToDoList
-//
-//  Created by Robert on 7/6/17.
-//  Copyright © 2017 Lent Coding. All rights reserved.
-//
+/*
+  AppDelegate.swift
+  MyNotes
+
+  Created by Robert on 7/6/17.
+  Copyright © 2017 Lent Coding. All rights reserved.
+*/
 
 import UIKit
 

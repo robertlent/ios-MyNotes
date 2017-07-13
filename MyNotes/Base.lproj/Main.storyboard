@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--To-Do List-->
+        <!--My Notes-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="9pv-A4-QxB" customClass="FirstViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="9pv-A4-QxB" userLabel="My Notes" customClass="FirstViewController" customModule="MyNotes" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ia1-K6-d13"/>
                         <viewControllerLayoutGuide type="bottom" id="4ug-Mw-9AY"/>
@@ -26,7 +26,7 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="task" id="Acj-I6-rhr">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="note" id="Acj-I6-rhr">
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Acj-I6-rhr" id="B4E-dg-2Jy">
@@ -34,7 +34,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="uU5-en-2el" kind="showDetail" identifier="editItem" id="JM0-xg-DqM"/>
+                                            <segue destination="uU5-en-2el" kind="showDetail" identifier="viewItem" id="JM0-xg-DqM"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -46,13 +46,13 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="uJr-85-rrm" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="QSN-dk-rMg"/>
                             <constraint firstItem="uJr-85-rrm" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" id="Y8y-aK-Oz8"/>
+                            <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="uJr-85-rrm" secondAttribute="bottom" id="ehK-0V-4ly"/>
                             <constraint firstAttribute="trailing" secondItem="uJr-85-rrm" secondAttribute="trailing" id="j9q-Pu-dsl"/>
-                            <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="uJr-85-rrm" secondAttribute="bottom" id="vh7-Xp-Tl7"/>
+                            <constraint firstItem="uJr-85-rrm" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="lxJ-MJ-KLq"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="To-Do List" id="rUz-Bh-bz1">
+                    <navigationItem key="navigationItem" title="My Notes" id="rUz-Bh-bz1" userLabel="My Notes">
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="mVM-pK-TSH">
                                 <connections>
@@ -68,8 +68,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="arrangeListButton" destination="KdZ-FH-aoZ" id="fJv-oC-h4h"/>
-                        <outlet property="newTaskButton" destination="mVM-pK-TSH" id="nl0-Xy-LqY"/>
-                        <outlet property="taskList" destination="uJr-85-rrm" id="pNc-dE-kRw"/>
+                        <outlet property="newNoteButton" destination="mVM-pK-TSH" id="5Oa-XA-9sB"/>
+                        <outlet property="noteList" destination="uJr-85-rrm" id="iRz-aK-m95"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
@@ -79,7 +79,7 @@
         <!--Third View Controller-->
         <scene sceneID="yWr-XV-RTF">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="uU5-en-2el" customClass="ThirdViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="uU5-en-2el" customClass="ThirdViewController" customModule="MyNotes" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HiE-Hk-CBg"/>
                         <viewControllerLayoutGuide type="bottom" id="6t0-Vp-OVD"/>
@@ -91,21 +91,28 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ATT-qG-TGs">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <items>
-                                    <navigationItem title="Edit Task" id="H4V-my-Sbh">
+                                    <navigationItem title="View Note" id="H4V-my-Sbh">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="61K-fr-LGu">
                                             <connections>
                                                 <action selector="pressedCancel:" destination="uU5-en-2el" id="8e8-jX-xdk"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="bfz-wf-8WT">
-                                            <connections>
-                                                <segue destination="BVv-3H-Exa" kind="unwind" unwindAction="unwindToFirstViewControllerWithSegue:" id="ngu-KR-wnH"/>
-                                            </connections>
-                                        </barButtonItem>
+                                        <rightBarButtonItems>
+                                            <barButtonItem title="Edit" id="bfz-wf-8WT">
+                                                <connections>
+                                                    <action selector="pressedEdit:" destination="uU5-en-2el" id="qAi-Oa-PGF"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem systemItem="action" id="wpA-dt-kad">
+                                                <connections>
+                                                    <action selector="pressedShare:" destination="uU5-en-2el" id="uk5-5i-4XT"/>
+                                                </connections>
+                                            </barButtonItem>
+                                        </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DQT-wb-eAh">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DQT-wb-eAh">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -124,18 +131,19 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="editTask" destination="DQT-wb-eAh" id="aG8-Je-gor"/>
+                        <outlet property="editButton" destination="bfz-wf-8WT" id="eCC-w4-zKe"/>
+                        <outlet property="shareButton" destination="wpA-dt-kad" id="q06-Db-ZjB"/>
+                        <outlet property="viewNote" destination="DQT-wb-eAh" id="gCX-EO-UlM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VdK-pe-a4v" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="BVv-3H-Exa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2444" y="-320.68965517241384"/>
         </scene>
-        <!--New Task-->
+        <!--New Note-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="8rJ-Kc-sve" customClass="SecondViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="8rJ-Kc-sve" customClass="SecondViewController" customModule="MyNotes" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="L7p-HK-0SC"/>
                         <viewControllerLayoutGuide type="bottom" id="Djb-ko-YwX"/>
@@ -147,7 +155,7 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z4n-IB-rM4">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <string key="text">Type your Task here. I suggest for longer Tasks that you write a short subject on the first line, followed by an empty line, and then the body of your Task.</string>
+                                <string key="text">Type your note here. I suggest for longer notes that you write a short subject on the first line, followed by an empty line, and then the body of your note.</string>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -164,7 +172,7 @@
                             <constraint firstItem="Z4n-IB-rM4" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="rPB-eZ-FgQ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="New Task" id="Pa5-jN-zDe">
+                    <navigationItem key="navigationItem" title="New Note" id="Pa5-jN-zDe">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Ej5-70-KcW">
                             <connections>
                                 <action selector="pressedCancel:" destination="8rJ-Kc-sve" id="56Y-ws-6tf"/>
@@ -172,7 +180,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="Tp8-y0-SZU">
                             <connections>
-                                <segue destination="aLY-rf-rty" kind="unwind" unwindAction="unwindToFirstViewControllerWithSegue:" id="tjH-bL-A72"/>
+                                <segue destination="aLY-rf-rty" kind="unwind" identifier="unwindAndSaveNew" unwindAction="unwindToFirstViewControllerWithSegue:" id="tjH-bL-A72"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -185,11 +193,11 @@
             </objects>
             <point key="canvasLocation" x="2628" y="377.36131934032989"/>
         </scene>
-        <!--To-Do List-->
+        <!--My Notes-->
         <scene sceneID="Zyx-pW-vzT">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nej-bq-hb1" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="To-Do List" image="first" id="acW-dT-cKf"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nej-bq-hb1" userLabel="My Notes" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="To-Do List" image="first" id="acW-dT-cKf" userLabel="My Notes"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pbR-64-has">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>

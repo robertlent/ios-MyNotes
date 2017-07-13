@@ -1,41 +1,51 @@
 /*
-//  FirstViewController.swift
-//  ToDoList
-//
-//  Created by Robert on 7/6/17.
-//  Copyright © 2017 Lent Coding. All rights reserved.
+  FirstViewController.swift
+  MyNotes
+
+  Created by Robert on 7/6/17.
+  Copyright © 2017 Lent Coding. All rights reserved.
 */
 
 import UIKit
 import Social
 
 let defaults = UserDefaults.standard
-var list = defaults.stringArray(forKey: "ToDoListItems") ?? [String]()
+var list = defaults.stringArray(forKey: "Notes") ?? [String]()
 
 class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    @IBOutlet weak var taskList: UITableView!
+    @IBOutlet weak var noteList: UITableView!
     @IBOutlet weak var arrangeListButton: UIBarButtonItem!
-    @IBOutlet weak var newTaskButton: UIBarButtonItem!
-    var taskText = ""
+    @IBOutlet weak var newNoteButton: UIBarButtonItem!
+    var noteText = ""
     
     func pressedShare() {
-        let shareAlert = UIAlertController(title: "Share", message: "Share your task!", preferredStyle: .actionSheet)
+        let shareAlert = UIAlertController(title: "Share", message: "Share your note!", preferredStyle: .actionSheet)
         
         let shareFacebook = UIAlertAction(title: "Share on Facebook", style: .default, handler: {(shareAlert: UIAlertAction!) in
             let post = SLComposeViewController(forServiceType: SLServiceTypeFacebook)!
-                
-            post.setInitialText("\(self.taskText) - Shared from Lent Coding's To-Do-List iOS app. https://github.com/robertmlent/ios-ToDoList")
+            
+            post.setInitialText("\(self.noteText) - Shared from Lent Coding's My Notes iOS app")
+            post.add(URL(string: "https://github.com/robertmlent/ios-MyNotes"))
             post.add(UIImage(named: "iPad-ProApp-83.5@2x.png"))
-                
+            
             self.present(post, animated: true, completion: nil)
         })
         
         let shareTwitter = UIAlertAction(title: "Share on Twitter", style: .default, handler: {(shareAlert: UIAlertAction!) in
             let post = SLComposeViewController(forServiceType: SLServiceTypeTwitter)!
+            var twitterText = ""
+            
+            // If text is longer than 70 chars, truncate to 69 and add special char …, else share whole text
+            if self.noteText.characters.count > 70 {
+                twitterText = "\(self.noteText.substring(to: self.noteText.index(self.noteText.startIndex, offsetBy: 69)))…"
                 
-            post.setInitialText("\(self.taskText) - Shared from Lent Coding's To-Do-List iOS app. https://github.com/robertmlent/ios-ToDoList")
-            post.add(UIImage(named: "iPad-ProApp-83.5@2x.png"))
-                
+                post.setInitialText("\(twitterText) - Shared from Lent Coding's My Notes iOS app")
+                post.add(URL(string: "https://github.com/robertmlent/ios-MyNotes"))
+            } else {
+                post.setInitialText("\(self.noteText) - Shared from Lent Coding's My Notes iOS app")
+                post.add(URL(string: "https://github.com/robertmlent/ios-MyNotes"))
+            }
+            
             self.present(post, animated: true, completion: nil)
         })
         
@@ -53,7 +63,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "task")
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "note")
         cell.textLabel?.text = list[indexPath.row]
         
         return cell
@@ -70,14 +80,14 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "editItem", sender: self)
+        performSegue(withIdentifier: "viewItem", sender: self)
     }
 
     func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
-            let touchPoint = longPressGestureRecognizer.location(in: self.taskList)
-            if let indexPath = taskList.indexPathForRow(at: touchPoint) {
-                taskText = String(list[indexPath.row])
+            let touchPoint = longPressGestureRecognizer.location(in: self.noteList)
+            if let indexPath = noteList.indexPathForRow(at: touchPoint) {
+                noteText = String(list[indexPath.row])
                 pressedShare()
             }
         }
@@ -86,27 +96,30 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
             list.remove(at: indexPath.row)
-            defaults.set(list, forKey: "ToDoListItems")
-            taskList.reloadData()
+            defaults.set(list, forKey: "Notes")
+            noteList.reloadData()
+            arrangeButtonStatus()
         }
     }
     
     @IBAction func pressedArrange(_ sender: Any) {
-        taskList.isEditing = !taskList.isEditing
+        noteList.isEditing = !noteList.isEditing
         
-        switch taskList.isEditing {
+        switch noteList.isEditing {
         case true:
             arrangeListButton.title = "Done"
-            newTaskButton.isEnabled = false
+            newNoteButton.isEnabled = false
         default:
             arrangeListButton.title = "Arrange"
-            newTaskButton.isEnabled = true
-            defaults.set(list, forKey: "ToDoListItems")
+            newNoteButton.isEnabled = true
+            defaults.set(list, forKey: "Notes")
+            arrangeButtonStatus()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        arrangeButtonStatus()
         
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(FirstViewController.longPress(_:)))
         longPressGesture.minimumPressDuration = 1.0
@@ -116,14 +129,23 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        taskList.reloadData()
-        defaults.set(list, forKey: "ToDoListItems")
+        arrangeButtonStatus()
+        noteList.reloadData()
+        defaults.set(list, forKey: "Notes")
+    }
+    
+    func arrangeButtonStatus() {
+        if list.count <= 1 {
+            arrangeListButton.isEnabled = false
+        } else {
+            arrangeListButton.isEnabled = true
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "editItem" {
+        if segue.identifier == "viewItem" {
             if let destination = segue.destination as? ThirdViewController {
-                let selectedItem = taskList.indexPathForSelectedRow!.row
+                let selectedItem = noteList.indexPathForSelectedRow!.row
                 let arrayIndex = selectedItem
                 destination.selectedItem = list[selectedItem]
                 destination.arrayIndex = arrayIndex
