@@ -10,7 +10,7 @@ For Twitter sharing, the app will truncate their note at 69 characters, if neces
 ![ScreenShot](Screenshots/AppInterfaceShare.png)
 
 ### Works on
-The app is written in Swift 3, so it should run on any device running iOS 8 or later.
+The app is written in Swift 3, and should run on most devices running iOS 8 or later, with some potential exceptions, as some features may not be available in versions before iOS 10.
 
 ### Artwork
 App icon is from http://www.iconarchive.com 
