@@ -4,6 +4,8 @@
 
   Created by Robert on 7/6/17.
   Copyright © 2017 Lent Coding. All rights reserved.
+ 
+  Updated on 3/4/18.
 */
 
 import UIKit
@@ -21,7 +23,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func pressedShare() {
         let shareAlert = UIAlertController(title: "Share", message: "Share your note!", preferredStyle: .actionSheet)
         
-        let shareFacebook = UIAlertAction(title: "Share on Facebook", style: .default, handler: {(shareAlert: UIAlertAction!) in
+        /*
+         let shareFacebook = UIAlertAction(title: "Share on Facebook", style: .default, handler: {(shareAlert: UIAlertAction!) in
             let post = SLComposeViewController(forServiceType: SLServiceTypeFacebook)!
             
             post.setInitialText("\(self.noteText) - Shared from Lent Coding's My Notes iOS app")
@@ -30,20 +33,20 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             
             self.present(post, animated: true, completion: nil)
         })
+        */
         
         let shareTwitter = UIAlertAction(title: "Share on Twitter", style: .default, handler: {(shareAlert: UIAlertAction!) in
             let post = SLComposeViewController(forServiceType: SLServiceTypeTwitter)!
             var twitterText = ""
             
-            // If text is longer than 70 chars, truncate to 69 and add special char …, else share whole text
-            if self.noteText.characters.count > 70 {
-                twitterText = "\(self.noteText.substring(to: self.noteText.index(self.noteText.startIndex, offsetBy: 69)))…"
+            // If text is longer than 210 chars, truncate to 208 and add special char …, else share whole text
+            // 3/4/18 - Increased character limit to reflect Twitter's limit increase to 280
+            if self.noteText.count > 210 {
+                twitterText = "\(self.noteText[..<self.noteText.index(self.noteText.startIndex, offsetBy: 208)])…"
                 
-                post.setInitialText("\(twitterText) - Shared from Lent Coding's My Notes iOS app")
-                post.add(URL(string: "https://github.com/robertmlent/ios-MyNotes"))
+                post.setInitialText("\(twitterText) - Shared from Lent Coding's My Notes iOS app. https://github.com/robertmlent/ios-MyNotes")
             } else {
-                post.setInitialText("\(self.noteText) - Shared from Lent Coding's My Notes iOS app")
-                post.add(URL(string: "https://github.com/robertmlent/ios-MyNotes"))
+                post.setInitialText("\(self.noteText) - Shared from Lent Coding's My Notes iOS app. https://github.com/robertmlent/ios-MyNotes")
             }
             
             self.present(post, animated: true, completion: nil)
@@ -51,7 +54,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         let cancelShare = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        shareAlert.addAction(shareFacebook)
+        // 3/4/18 - Disabled Facebook sharing until I am able to update the above Facebook code to work in iOS 11
+//        shareAlert.addAction(shareFacebook)
         shareAlert.addAction(shareTwitter)
         shareAlert.addAction(cancelShare)
         
@@ -83,7 +87,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         performSegue(withIdentifier: "viewItem", sender: self)
     }
 
-    func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
             let touchPoint = longPressGestureRecognizer.location(in: self.noteList)
             if let indexPath = noteList.indexPathForRow(at: touchPoint) {
